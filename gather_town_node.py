@@ -2,22 +2,45 @@
 import rospy
 from std_msgs.msg import String
 import keyboard
+import time
+
+header = '1'
 
 def callback(data):
+    global header
+
     msg = data.data
     rospy.loginfo(msg)
-    if msg == '1':
-	keyboard.press_and_release('up')
-    elif msg == '3':
-	keyboard.press_and_release('down')
-    elif msg == '4':
-	keyboard.press_and_release('left')
-    elif msg == '2':
-	keyboard.press_and_release('right')
-    else:
-	pass
-
     
+    if msg == '0':
+        pass
+        rospy.loginfo('dont move')
+
+    else:
+
+	if header == msg:
+	    rospy.loginfo('forward')
+	    if msg == '1':
+	        keyboard.press_and_release('up')
+    	    elif msg == '3':
+		keyboard.press_and_release('down')
+    	    elif msg == '4':
+		keyboard.press_and_release('left')
+    	    elif msg == '2':
+		keyboard.press_and_release('right')
+
+	else:
+	    rospy.loginfo('turn')
+	    time.sleep(1)
+	    if msg == '1':
+	        keyboard.press_and_release('up')
+    	    elif msg == '3':
+		keyboard.press_and_release('down')
+    	    elif msg == '4':
+		keyboard.press_and_release('left')
+    	    elif msg == '2':
+		keyboard.press_and_release('right')
+    	header = msg
 def listener():
 
     # In ROS, nodes are uniquely named. If two nodes with the same

@@ -35,10 +35,13 @@ def callback(data):
 	elif (abs(error) > 2 and error < 0) or (abs(error) < 2 and error > 0):
 	    rospy.loginfo('turn left')
 	    movement_cmd.linear.x = 0
-	    movement_cmd.angular.z = 6
+	    movement_cmd.angular.z = 3
 	    movement_publisher = rospy.Publisher('cmd_vel', Twist , queue_size=10)
 	    movement_publisher.publish(movement_cmd)
-	    time.sleep(turn_time)
+	    if abs(error) > 2:
+		error = abs(error) - 2
+	    rospy.loginfo("Error {}".format(error))
+	    time.sleep(turn_time * abs(error))
 	    movement_cmd.linear.x = 0  
 	    movement_cmd.angular.z = 0
 	    movement_publisher = rospy.Publisher('cmd_vel', Twist , queue_size=10)
@@ -47,10 +50,13 @@ def callback(data):
 	elif (abs(error) <= 2 and error < 0) or (abs(error) >= 2 and error > 0):
             rospy.loginfo('turn right')
 	    movement_cmd.linear.x = 0
-	    movement_cmd.angular.z = -6
+	    movement_cmd.angular.z = -3
 	    movement_publisher = rospy.Publisher('cmd_vel', Twist , queue_size=10)
 	    movement_publisher.publish(movement_cmd)
-	    time.sleep(turn_time)
+	    if abs(error) > 2:
+		error = abs(error) - 2
+	    rospy.loginfo("Error {}".format(error))
+	    time.sleep(turn_time * abs(error))
 	    movement_cmd.linear.x = 0  
 	    movement_cmd.angular.z = 0
 	    movement_publisher = rospy.Publisher('cmd_vel', Twist , queue_size=10)
